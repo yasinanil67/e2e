@@ -10,6 +10,8 @@ import utilities.Driver;
 public class MedunnaRoomStepDefinitions {
     MedunnaHomePage medunnaHomePage = new MedunnaHomePage();
     MedunnaRoomPage medunnaRoomPage = new MedunnaRoomPage();
+    public static int roomNumberFaker;
+    public static String roomId;
 
     @When("Click on ItemsAndTitles")
     public void click_on_items_and_titles() {
@@ -34,8 +36,9 @@ public class MedunnaRoomStepDefinitions {
 
     @When("enter {string} room number input")
     public void enter_room_number_input(String roomNumber) {
+        roomNumberFaker = Faker.instance().number().numberBetween(100000, 1000000);
 
-        medunnaRoomPage.roomNumberInput.sendKeys(Faker.instance().number().numberBetween(100000, 1000000) + "");
+        medunnaRoomPage.roomNumberInput.sendKeys(roomNumberFaker + "");
 
     }
 
@@ -69,9 +72,15 @@ public class MedunnaRoomStepDefinitions {
 
 
     @When("click on Save button")
-    public void click_on_save_button() {
+    public void click_on_save_button() throws InterruptedException {
 
         medunnaRoomPage.saveSubmitButton.click();
+
+        Thread.sleep(2000);
+
+        roomId = medunnaRoomPage.alert.getText().replaceAll("[^0-9]","");
+        System.out.println("roomId = " + roomId);
+
 
     }
 
